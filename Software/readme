@@ -1,1 +1,87 @@
+Medicion de voltaje:
+A0---24K----<
+  | 
+10K
+  |
+ Gnd
+Mide maximo 11V  ya que 11/(24+10) da unos 3,2v a la entrada del NodeMCU (que ya tiene divisor resistivo con un maximo de 3,3v)
 
+
+float Voltaje = 0.0;
+
+float valor = analogRead(A0);  // si bien se lee un int, "valor" debe ser float para que la division tambien quede en float
+Voltaje = (valor * 10.8) / 1024.0; // la R es de 10K  pero se multiplica por 10.8 para corregir diferencia de valor
+   if (Voltaje < 0.1) 
+   {     Voltaje=0.0;   } 
+
+**************************************
+
+Datos en Web:
+https://thingspeak.com/
+
+https://thingsboard.io    dacom@   
+https://demo.thingsboard.io/api/noauth/activate?activateToken=XwG2D5tvoc5V8mrFbfnFQw1B6JS0qr
+
+Sonda22  publico (bajo dacom@)
+https://demo.thingsboard.io/dashboard/9fb8a040-3afc-11ed-b827-c9be76c6f5d7?publicId=78ec4d30-edd2-11ec-a900-4f6af7758cb5
+
+
+Dani Publico
+https://demo.thingsboard.io/dashboard/87ac6c40-edcf-11ec-a900-4f6af7758cb5?publicId=78ec4d30-edd2-11ec-a900-4f6af7758cb5
+bit.ly/3g7Nr73
+
+Temp
+curl -v -X POST -d "{\"TempTest01\": 25}" https://demo.thingsboard.io/api/v1/gjmhlFJzDQzn20oEFmX1/telemetry --header "Content-Type:application/json"
+
+Sonda22 
+Dispositivo PSonda22  alias Sonda22  Token  dj4CkDAnyLDgtVcgcBtI
+curl -v -X POST -d "{\"Voltaje\": 10}" https://demo.thingsboard.io/api/v1/dj4CkDAnyLDgtVcgcBtI/telemetry --header "Content-Type:application/json"
+curl -v -X POST -d "{\"RPM\": 10}" https://demo.thingsboard.io/api/v1/dj4CkDAnyLDgtVcgcBtI/telemetry --header "Content-Type:application/json"
+
+Dispositivo Servo01 con alias ServoSolar (Servo, voltaje, temperatura)  token eOYUh7lDt2kMDZnE8Wuy
+curl -v -X POST -d "{\"voltaje\": 6}" https://demo.thingsboard.io/api/v1/eOYUh7lDt2kMDZnE8Wuy/telemetry --header "Content-Type:application/json"
+
+
+
+HTTP POST: {"Voltaje": 10}" https://demo.thingsboard.io/api/v1/dj4CkDAnyLDgtVcgcBtI/telemetry --header"Content-Type:application/json"
+
+vPanel 01
+Nco2uh2GaaXbsOcXAGot
+curl -v -X POST -d "{\"VPanel01\": 10}" https://demo.thingsboard.io/api/v1/Nco2uh2GaaXbsOcXAGot/telemetry --header "Content-Type:application/json"
+
+Panel Sofi (Public)
+https://demo.thingsboard.io/dashboard/e55af640-0472-11ed-b0a3-db9fa717ad10?publicId=3e6c19b0-0475-11ed-b0a3-db9fa717ad10
+
+
+
+https://thingsboard.io/docs/samples/esp8266/temperature/
+https://thingsboard.io/docs/samples/esp8266/gpio/
+
+https://thingsboard.io/docs/samples/arduino/temperature/
+
+******************************************************
+//*****   Para Funcion Temp  ******* 
+#include <OneWire.h> 
+#include <DallasTemperature.h>
+/********************************************************************/
+#define ONE_WIRE_BUS 4      // En PIN D4 
+OneWire oneWire(ONE_WIRE_BUS); 
+DallasTemperature Dallas(&oneWire);
+float temp;
+/********************************************************************/ 
+void setup(void) 
+{ 
+ Serial.begin(9600); 
+ Serial.println("Dallas Temperature IC Control Library Demo"); 
+ Dallas.begin(); 
+} 
+void loop(void) 
+{ 
+Serial.print(" Pido Temp"); 
+Dallas.requestTemperatures(); // Send the command to get temperature readings 
+Serial.print("Temp: "); 
+temp = DallasA.getTempCByIndex(0);Serial.println(temp2);
+Serial.println(temp); 
+   delay(1000); 
+} //loop
+//*****   Funcion Temp  ******* 
